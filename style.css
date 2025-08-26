@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    
+    /* ===== これが最も確実な中央揃えの指定です ===== */
+    display: flex;
+    flex-direction: column;   /* 要素を縦に並べる */
+    align-items: center;      /* 左右の中央揃え */
+    justify-content: center;  /* 上下の中央揃え */
+    min-height: 100vh;        /* 画面の高さいっぱいに広げる */
+}
+
+/* ===== ヘッダーのデザイン ===== */
+.site-header {
+    margin-bottom: 20px; /* カードとの間に余白を確保 */
+}
+
+.site-header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* ===== メインエリアのデザイン ===== */
+.main-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.emoji-mixer {
+    width: 90%;
+    max-width: 1300px; 
+    background-color: white;
+    padding: 64px; 
+    border-radius: 32px;
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.emoji-mixer h1 {
+    font-size: 48px;
+    margin-bottom: 48px;
+}
+
+/* ===== 選択した絵文字の表示エリア ===== */
+.selected-emojis-display {
+    width: 100%;
+    min-height: 120px;
+    background-color: #f0f3f5;
+    border-radius: 16px;
+    margin-bottom: 48px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+}
+
+/* ===== 絵文字リストのグリッドとスクロール ===== */
+.emoji-input-area {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #dbe4ea #f4f7f9;
+}
+
+.emoji-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 24px; 
+}
+
+/* ===== 絵文字ボタンのデザインとアニメーション ===== */
+.emoji-button {
+    font-size: 56px; 
+    background-color: #e9eef2;
+    border: none;
+    border-radius: 16px;
+    padding: 20px; 
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.emoji-button:hover {
+    transform: scale(1.1);
+    background-color: #dbe4ea;
+}
+
+.emoji-button.selected {
+    background-color: #c5d4e0;
+    transform: scale(1.1);
+}
