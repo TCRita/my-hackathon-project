@@ -16,7 +16,7 @@
 ## 🛠️ 技術スタック
 
 * **HTML5**
-* **CSS3** (Flexbox, Grid)
+* **CSS3**
 * **JavaScript (Vanilla JS)**
 * **Howler.js** - 音声再生ライブラリ
 

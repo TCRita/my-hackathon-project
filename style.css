@@ -11,15 +11,15 @@ body {
     
     /* ===== これが最も確実な中央揃えの指定です ===== */
     display: flex;
-    flex-direction: column;   /* 要素を縦に並べる */
-    align-items: center;      /* 左右の中央揃え */
-    justify-content: center;  /* 上下の中央揃え */
-    min-height: 100vh;        /* 画面の高さいっぱいに広げる */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 /* ===== ヘッダーのデザイン ===== */
 .site-header {
-    margin-bottom: 20px; /* カードとの間に余白を確保 */
+    margin-bottom: 20px;
 }
 
 .site-header h1 {
