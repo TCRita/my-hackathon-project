@@ -1,26 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 絵文字と音ファイルの対応
-const emojiSounds = {
-    "🌧️": new Howl({ src: ['sounds/rain.mp3'], loop: true, volume: 0.8 }),
-    "⛈️": new Howl({ src: ['sounds/thunder_cloud_rain.mp3'], loop: true, volume: 0.8 }),
-    "☀️": new Howl({ src: ['sounds/sunny.mp3'], loop: true, volume: 0.8 }),
-    "🔥": new Howl({ src: ['sounds/fire.mp3'], loop: true, volume: 0.8 }),
-    "🌊": new Howl({ src: ['sounds/water_wave.mp3'], loop: true, volume: 0.8 }),
-    "🌸": new Howl({ src: ['sounds/cherry_blossom.mp3'], loop: true, volume: 0.8 }),
-    "🌳": new Howl({ src: ['sounds/tree.mp3'], loop: true, volume: 0.8 }),
-    "❄️": new Howl({ src: ['sounds/snowflake.mp3'], loop: true, volume: 0.8 }),
-    "🌈": new Howl({ src: ['sounds/rainbow.mp3'], loop: true, volume: 0.8 }),
-    "🍂": new Howl({ src: ['sounds/fallen_leaf.mp3'], loop: true, volume: 0.8 }),
-    "🌅": new Howl({ src: ['sounds/sunrise.mp3'], loop: true, volume: 0.8 }),
-    "🌇": new Howl({ src: ['sounds/sunset.mp3'], loop: true, volume: 0.8 }),
-    "🌪️": new Howl({ src: ['sounds/tornado.mp3'], loop: true, volume: 0.8 }),
-    "🌋": new Howl({ src: ['sounds/volcano.mp3'], loop: true, volume: 0.8 }),
-    "🎆": new Howl({ src: ['sounds/fireworks.mp3'], loop: true, volume: 0.8 }),
-    "🎇": new Howl({ src: ['sounds/sparkler.mp3'], loop: true, volume: 0.8 }),
-    "🫧": new Howl({ src: ['sounds/bubbles.mp3'], loop: true, volume: 0.8 }),
-    "🏜️": new Howl({ src: ['sounds/desert.mp3'], loop: true, volume: 0.8 }),
-    "💧": new Howl({ src: ['sounds/droplet.mp3'], loop: true, volume: 0.8 })
-};
+    const emojiSounds = {
+        "🌧️": new Howl({ src: ['sounds/rain.mp3'], loop: true, volume: 0.8 }),
+        "☀️": new Howl({ src: ['sounds/sunny.mp3'], loop: true, volume: 0.8 }),
+        "⛈️": new Howl({ src: ['sounds/thunder_cloud_rain.mp3'], loop: true, volume: 0.8 }),
+        "❄️": new Howl({ src: ['sounds/snowflake.mp3'], loop: true, volume: 0.8 }),
+        "🌈": new Howl({ src: ['sounds/rainbow.mp3'], loop: true, volume: 0.8 }),
+        "🌊": new Howl({ src: ['sounds/water_wave.mp3'], loop: true, volume: 0.8 }),
+        "🔥": new Howl({ src: ['sounds/fire.mp3'], loop: true, volume: 0.8 }),
+        "🌳": new Howl({ src: ['sounds/tree.mp3'], loop: true, volume: 0.8 }),
+        "🌸": new Howl({ src: ['sounds/cherry_blossom.mp3'], loop: true, volume: 0.8 }),
+        "🌅": new Howl({ src: ['sounds/sunrise.mp3'], loop: true, volume: 0.8 }),
+        "🌇": new Howl({ src: ['sounds/sunset.mp3'], loop: true, volume: 0.8 }),
+        "🌪️": new Howl({ src: ['sounds/tornado.mp3'], loop: true, volume: 0.8 }),
+        "🌋": new Howl({ src: ['sounds/volcano.mp3'], loop: true, volume: 0.8 }),
+        "🎆": new Howl({ src: ['sounds/fireworks.mp3'], loop: true, volume: 0.8 }),
+        "🎇": new Howl({ src: ['sounds/sparkler.mp3'], loop: true, volume: 0.8 }),
+        "🫧": new Howl({ src: ['sounds/bubbles.mp3'], loop: true, volume: 0.8 }),
+        "🏜️": new Howl({ src: ['sounds/desert.mp3'], loop: true, volume: 0.8 }),
+        "💧": new Howl({ src: ['sounds/droplet.mp3'], loop: true, volume: 0.8 }),
+        "🍂": new Howl({ src: ['sounds/fallen_leaf.mp3'], loop: true, volume: 0.8 }),
+        "🪸": new Howl({ src: ['sounds/coral.mp3'], loop: true, volume: 0.8 }),
+        "💥": new Howl({ src: ['sounds/boom.mp3'], loop: true, volume: 0.8 }),
+        "🦁": new Howl({ src: ['sounds/lion_face.mp3'], loop: true, volume: 0.8 }),
+        "🐘": new Howl({ src: ['sounds/elephant.mp3'], loop: true, volume: 0.8 }),
+        "🐎": new Howl({ src: ['sounds/racehorse.mp3'], loop: true, volume: 0.8 }),
+        "🐕": new Howl({ src: ['sounds/dog2.mp3'], loop: true, volume: 0.8 }),
+        "🐈": new Howl({ src: ['sounds/cat2.mp3'], loop: true, volume: 0.8 }),
+        "🐗": new Howl({ src: ['sounds/boar.mp3'], loop: true, volume: 0.8 }),
+        "🐐": new Howl({ src: ['sounds/goat.mp3'], loop: true, volume: 0.8 }),
+        "🐏": new Howl({ src: ['sounds/ram.mp3'], loop: true, volume: 0.8 }),
+        "🐖": new Howl({ src: ['sounds/pig2.mp3'], loop: true, volume: 0.8 }),
+        "🐮": new Howl({ src: ['sounds/cow.mp3'], loop: true, volume: 0.8 }),
+        "🐺": new Howl({ src: ['sounds/wolf.mp3'], loop: true, volume: 0.8 })
+    };
 
 
     const emojiButtons = document.querySelectorAll(".emoji-button");
