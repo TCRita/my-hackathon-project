@@ -27,10 +27,39 @@ body {
 
 /* メインエリアのデザイン */
 .main-content {
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
 }
+
+/* ==== ↓↓↓ 共有・コピーボタンのスタイルを追加・修正 ↓↓↓ ==== */
+.action-buttons-container {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    z-index: 20;
+    display: flex; /* ボタンを横並びにする */
+    gap: 10px; /* ボタン間の隙間 */
+}
+.action-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.2s, transform 0.2s;
+}
+.action-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+/* ==== ↑↑↑ 追加・修正するスタイルはここまで ↑↑↑ ==== */
+
 .emoji-mixer {
     width: 90%;
     max-width: 1300px; 
@@ -148,7 +177,6 @@ body {
 .filter-menu input {
     margin-right: 8px;
 }
-
 
 /* 絵文字リストのグリッド */
 .emoji-input-area {
