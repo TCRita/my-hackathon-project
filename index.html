@@ -19,33 +19,59 @@
 
             <div class="selected-emojis-display">
                 </div>
-            
-            <div class="emoji-input-area">
-                <ul class="emoji-list">
-                    <li><button class="emoji-button">🌧️</button></li>
-                    <li><button class="emoji-button">⛈️</button></li>
-                    <li><button class="emoji-button">☀️</button></li>
-                    <li><button class="emoji-button">🔥</button></li>
-                    <li><button class="emoji-button">🌊</button></li>
-                    <li><button class="emoji-button">🌸</button></li>
-                    <li><button class="emoji-button">🌳</button></li>
-                    <li><button class="emoji-button">❄️</button></li>
-                    <li><button class="emoji-button">🌈</button></li>
-                    <li><button class="emoji-button">🍂</button></li>
-                    <li><button class="emoji-button">🌅</button></li>
-                    <li><button class="emoji-button">🌇</button></li>
-                    <li><button class="emoji-button">🌪️</button></li>
-                    <li><button class="emoji-button">🌋</button></li>
-                    <li><button class="emoji-button">🎆</button></li>
-                    <li><button class="emoji-button">🎇</button></li>
-                    <li><button class="emoji-button">🫧</button></li>
-                    <li><button class="emoji-button">🏜️</button></li>
-                    <li><button class="emoji-button">💧</button></li>
-                </ul>
+
+            <div class="emoji-selection-area">
+                <div class="filter-container">
+                    <button id="filter-toggle-button" class="filter-button">▼</button>
+                    <div id="filter-menu" class="filter-menu">
+                        <label><input type="checkbox" name="category" value="all" checked> すべて</label>
+                        <label><input type="checkbox" name="category" value="weather"> 天気</label>
+                        <label><input type="checkbox" name="category" value="nature"> 自然</label>
+                        <label><input type="checkbox" name="category" value="animal"> 動物</label>
+                    </div>
+                </div>
+
+                <div class="emoji-input-area">
+                    <ul class="emoji-list">
+                        <li data-category="weather"><button class="emoji-button">🌧️</button></li>
+                        <li data-category="weather"><button class="emoji-button">☀️</button></li>
+                        <li data-category="weather"><button class="emoji-button">⛈️</button></li>
+                        <li data-category="weather"><button class="emoji-button">❄️</button></li>
+                        <li data-category="nature"><button class="emoji-button">🌈</button></li>
+                        <li data-category="weather"><button class="emoji-button">🌊</button></li>
+                        <li data-category="nature"><button class="emoji-button">🔥</button></li>
+                        <li data-category="nature"><button class="emoji-button">🌳</button></li>
+                        <li data-category="nature"><button class="emoji-button">🌸</button></li>
+                        <li data-category="nature"><button class="emoji-button">🌅</button></li>
+                        <li data-category="nature"><button class="emoji-button">🌇</button></li>
+                        <li data-category="weather"><button class="emoji-button">🌪️</button></li>
+                        <li data-category="nature"><button class="emoji-button">🌋</button></li>
+                        <li data-category="nature"><button class="emoji-button">🎆</button></li>
+                        <li data-category="nature"><button class="emoji-button">🎇</button></li>
+                        <li data-category="weather"><button class="emoji-button">🫧</button></li>
+                        <li data-category="nature"><button class="emoji-button">🏜️</button></li>
+                        <li data-category="weather"><button class="emoji-button">💧</button></li>
+                        <li data-category="nature"><button class="emoji-button">🍂</button></li>
+                        <li data-category="nature"><button class="emoji-button">🪸</button></li>
+                        <li data-category="nature"><button class="emoji-button">💥</button></li>
+                        <li data-category="animal"><button class="emoji-button">🦁</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐘</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐎</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐕</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐈</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐗</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐐</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐏</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐖</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐮</button></li>
+                        <li data-category="animal"><button class="emoji-button">🐺</button></li>
+                    </ul>
+                </div>
             </div>
         </section>
     </main>
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
