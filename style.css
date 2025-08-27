@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* ヘッダーのデザイン */
+.site-header {
+    margin-bottom: 20px;
+}
+.site-header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* メインエリアのデザイン */
+.main-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.emoji-mixer {
+    width: 90%;
+    max-width: 1300px; 
+    background-color: white;
+    padding: 64px; 
+    border-radius: 32px;
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.emoji-mixer h1 {
+    font-size: 48px;
+    margin-bottom: 48px;
+}
+
+/* 選択した絵文字の表示エリア */
+.selected-emojis-display {
+    width: 100%;
+    min-height: 120px;
+    background-color: #f0f3f5;
+    border-radius: 16px;
+    margin-bottom: 48px;
+    padding: 24px;
+}
+
+/* ==== ↓↓↓ ここから新しいスタイルを追加 ↓↓↓ ==== */
+
+/* 選択済み絵文字リストのアイテム */
+.selected-emoji-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.emoji-icon {
+    font-size: 32px;
+    margin-right: 16px;
+}
+
+/* 音量スライダーのデザイン */
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 12px;
+    background: #e9eef2;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+}
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.volume-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+/* ==== ↑↑↑ 追加するスタイルはここまで ↑↑↑ ==== */
+
+
+/* 絵文字リストのグリッド */
+.emoji-input-area {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.emoji-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 24px; 
+}
+
+/* 絵文字ボタンのデザイン */
+.emoji-button {
+    font-size: 56px; 
+    background-color: #e9eef2;
+    border: none;
+    border-radius: 16px;
+    padding: 20px; 
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.emoji-button:hover {
+    transform: scale(1.1);
+    background-color: #dbe4ea;
+}
+.emoji-button.selected {
+    background-color: #c5d4e0;
+    transform: scale(1.1);
+}
