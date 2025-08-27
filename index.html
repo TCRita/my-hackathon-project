@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emoji Soundscape</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 </head>
 <body>
 
@@ -18,24 +17,29 @@
             <h1>好きな絵文字を選択してBGMを作ろう</h1>
 
             <div class="selected-emojis-display">
+                <div class="selected-emoji-item">
+                    <span class="emoji-icon">🌧️</span>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
                 </div>
-
+                </div>
+            
             <div class="emoji-input-area">
                 <ul class="emoji-list">
-                    <li><button class="emoji-button">🌧️</button></li>
-                    <li><button class="emoji-button">☀️</button></li>
-                    <li><button class="emoji-button">⛈️</button></li>
-                    <li><button class="emoji-button">❄️</button></li>
-                    <li><button class="emoji-button">🌈</button></li>
-                    <li><button class="emoji-button">🌊</button></li>
-                    <li><button class="emoji-button">🔥</button></li>
-                    <li><button class="emoji-button">🌳</button></li>
-                    <li><button class="emoji-button">🌸</button></li>
-                    <li><button class="emoji-button">🌅</button></li>
+                    <li><button class="emoji-button" data-sound="rain">🌧️</button></li>
+                    <li><button class="emoji-button" data-sound="sun">☀️</button></li>
+                    <li><button class="emoji-button" data-sound="storm">⛈️</button></li>
+                    <li><button class="emoji-button" data-sound="snow">❄️</button></li>
+                    <li><button class="emoji-button" data-sound="rainbow">🌈</button></li>
+                    <li><button class="emoji-button" data-sound="wave">🌊</button></li>
+                    <li><button class="emoji-button" data-sound="fire">🔥</button></li>
+                    <li><button class="emoji-button" data-sound="forest">🌳</button></li>
+                    <li><button class="emoji-button" data-sound="sakura">🌸</button></li>
+                    <li><button class="emoji-button" data-sound="sunrise">🌅</button></li>
                 </ul>
             </div>
         </section>
     </main>
-<script src="script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
