@@ -1,6 +1,10 @@
+// --- ！！！ここにあなたのUnsplashアクセスキーを設定してください！！！ ---
+const UNSPLASH_API_KEY = "fnZTrqtkTznddjx88X0nvieYIrflAEmMaFgEtuP7NcM"; 
+// 警告：このキーをGitHubの公開リポジトリに含めると、利用規約に違反する可能性があります。
+
 // --- 設定 ---
 const emojiSounds = {
-    '🫧': 'sounds/bubbles.mp3', '🌸': 'sounds/cherry_blossom.mp3', '🏜️': 'sounds/desert.mp3', '💧': 'sounds/droplet.mp3', '🍂': 'sounds/fallen_leaf.mp3', '🔥': 'sounds/fire.mp3', '🎆': 'sounds/fireworks.mp3', '🌧️': 'sounds/rain.mp3', '🌈': 'sounds/rainbow.mp3', '❄️': 'sounds/snowflake.mp3', '🎇': 'sounds/sparkler.mp3', '☀️': 'sounds/sunny.mp3', '🌅': 'sounds/sunrise.mp3', '🌇': 'sounds/sunset.mp3', '⛈️': 'sounds/thunder_cloud_rain.mp3', '🌪️': 'sounds/tornado.mp3', '🌳': 'sounds/tree.mp3', '🌋': 'sounds/volcano.mp3', '🌊': 'sounds/water_wave.mp3', '🪸': 'sounds/coral.mp3', '💥': 'sounds/boom.mp3', '🦁': 'sounds/lion_face.mp3', '🐘': 'sounds/elephant.mp3', '🐎': 'sounds/racehorse.mp3', '🐕': 'sounds/dog2.mp3', '🐈': 'sounds/cat2.mp3', '🐗': 'sounds/boar.mp3', '🐐': 'sounds/goat.mp3', '🐏': 'sounds/ram.mp3', '🐖': 'sounds/pig2.mp3', '🐮': 'sounds/cow.mp3', '🐺': 'sounds/wolf.mp3'
+    '🫧': 'sounds/bubbles.mp3', '🌸': 'sounds/cherry_blossom.mp3', '🏜️': 'sounds/desert.mp3', '💧': 'sounds/droplet.mp3', '🍂': 'sounds/fallen_leaf.mp3', '🔥': 'sounds/fire.mp3', '🎆': 'sounds/fireworks.mp3', '🌧️': 'sounds/rain.mp3', '🌈': 'sounds/rainbow.mp3', '❄️': 'sounds/snowflake.mp3', '🎇': 'sounds/sparkler.mp3', '☀️': 'sounds/sunny.mp3', '🌅': 'sounds/sunrise.mp3', '🌇': 'sounds/sunset.mp3', '⛈️': 'sounds/thunder_cloud_rain.mp3', '🌪️': 'sounds/tornado.mp3', '🌳': 'sounds/tree.mp3', '🌋': 'sounds/volcano.mp3', '🌊': 'sounds/water_wave.mp3', '🪸': 'sounds/coral.mp3', '💥': 'sounds/boom.mp3', '🦁': 'sounds/lion_face.mp3', '🐘': 'sounds/elephant.mp3', '🐎': 'sounds/racehorse.mp3', '🐕': 'sounds/dog2.mp3', '🐈': 'sounds/cat2.mp3', '🐗': 'sounds/boar.mp3', '🐐': 'sounds/goat.mp3', '🐏': 'sounds/ram.mp3', '🐖': 'sounds/pig2.mp3', '🐮': 'sounds/cow.mp3', '🐺': 'sounds/wolf.mp3', '🐸': 'sounds/frog.mp3', '🪙': 'sounds/coin.mp3', '🚑': 'sounds/ambulance.mp3', '🎐': 'sounds/wind_chime.mp3', '🏝️': 'sounds/island.mp3', '🧊': 'sounds/ice_cube.mp3', '🥤': 'sounds/cup_with_straw.mp3', '🥩': 'sounds/cut_of_meat.mp3', '🍽️': 'sounds/fork_knife_plate.mp3', '🔫': 'sounds/gun.mp3', '✨': 'sounds/sparkles.mp3', '🔔': 'sounds/bell.mp3', '🏹': 'sounds/bow_and_arrow.mp3', '🐚': 'sounds/shell.mp3', '🥁': 'sounds/drum.mp3', '🫙': 'sounds/jar.mp3', '🪨': 'sounds/rock.mp3', '🕰️': 'sounds/clock.mp3', '⌨️': 'sounds/keyboard.mp3', '🚀': 'sounds/rocket.mp3', '☂️': 'sounds/umbrella2.mp3', '🏫': 'sounds/school.mp3', '📃': 'sounds/page_with_curl.mp3', '🪚': 'sounds/carpentry_saw.mp3', '🖱️': 'sounds/mouse_three_button.mp3', '🚬': 'sounds/smoking.mp3', '💸': 'sounds/money_with_wings.mp3', '🪉': 'sounds/harp.mp3', '✈️': 'sounds/airplane.mp3'
 };
 const INITIAL_VOLUME = 0.8;
 const INITIAL_RATE = 1.0;
@@ -8,6 +12,7 @@ const SLIDER_COLOR_ACTIVE = '#007bff';
 const SLIDER_COLOR_INACTIVE = '#e9eef2';
 
 // --- HTML要素の取得 ---
+const imageLoadingOverlay = document.getElementById('image-loading-overlay');
 const displayArea = document.querySelector(".selected-emojis-display");
 const sliderLabelsHeader = document.getElementById("slider-labels-header");
 const emojiListItems = document.querySelectorAll('.emoji-list li');
@@ -31,11 +36,9 @@ function updateSliderBackground(slider) {
     const percentage = (slider.value - slider.min) / (slider.max - slider.min) * 100;
     slider.style.background = `linear-gradient(to right, ${SLIDER_COLOR_ACTIVE} 0%, ${SLIDER_COLOR_ACTIVE} ${percentage}%, ${SLIDER_COLOR_INACTIVE} ${percentage}%, ${SLIDER_COLOR_INACTIVE} 100%)`;
 }
-
 function updateLabelsHeaderVisibility() {
     sliderLabelsHeader.style.visibility = activeSounds.size > 0 ? 'visible' : 'hidden';
 }
-
 function updatePlayPauseButton() {
     if (isPlaying) {
         playPauseButton.textContent = '停止';
@@ -45,36 +48,24 @@ function updatePlayPauseButton() {
         playPauseButton.classList.remove('playing');
     }
 }
-
 function clearCurrentState() {
     isPlaying = false;
     activeSounds.forEach(sound => sound.stop());
     updatePlayPauseButton();
     Array.from(activeSounds.keys()).forEach(emoji => teardownEmojiSound(emoji));
 }
-
 function setupEmojiSound(emoji, volume, rate) {
     const button = Array.from(document.querySelectorAll('.emoji-button')).find(btn => btn.textContent === emoji);
     if (!button || !emojiSounds[emoji] || activeSounds.has(emoji)) return;
-
     button.classList.add("selected");
-    const sound = new Howl({ 
-        src: [emojiSounds[emoji]], 
-        loop: true, 
-        volume: volume, 
-        rate: rate,
-        html5: true 
-    });
+    const sound = new Howl({ src: [emojiSounds[emoji]], loop: true, volume: volume, rate: rate, html5: true });
     activeSounds.set(emoji, sound);
-
     const newItem = document.createElement("div");
     newItem.className = "selected-emoji-item";
     newItem.dataset.emoji = emoji;
-
     const emojiIcon = document.createElement("span");
     emojiIcon.className = "emoji-icon";
     emojiIcon.textContent = emoji;
-
     const volumeContainer = document.createElement('div');
     volumeContainer.className = 'slider-container';
     const volumeSlider = document.createElement("input");
@@ -90,7 +81,6 @@ function setupEmojiSound(emoji, volume, rate) {
         updateSliderBackground(volumeSlider);
     });
     volumeContainer.appendChild(volumeSlider);
-    
     const rateContainer = document.createElement('div');
     rateContainer.className = 'slider-container';
     const rateSlider = document.createElement("input");
@@ -106,38 +96,29 @@ function setupEmojiSound(emoji, volume, rate) {
         updateSliderBackground(rateSlider);
     });
     rateContainer.appendChild(rateSlider);
-
     newItem.appendChild(emojiIcon);
     newItem.appendChild(volumeContainer);
     newItem.appendChild(rateContainer);
     displayArea.appendChild(newItem);
-    
     updateSliderBackground(volumeSlider);
     updateSliderBackground(rateSlider);
     updateLabelsHeaderVisibility();
 }
-
 function teardownEmojiSound(emoji) {
     const button = Array.from(document.querySelectorAll('.emoji-button')).find(btn => btn.textContent === emoji);
     if (button) { button.classList.remove("selected"); }
-
     const sound = activeSounds.get(emoji);
     if (sound) { sound.stop(); activeSounds.delete(emoji); }
-
     const itemToRemove = displayArea.querySelector(`.selected-emoji-item[data-emoji="${emoji}"]`);
     if (itemToRemove) { displayArea.removeChild(itemToRemove); }
-    
     updateLabelsHeaderVisibility();
 }
-
 function getFavorites() {
     return JSON.parse(localStorage.getItem('emojiSoundscapeFavorites') || '[]');
 }
-
 function saveFavorites(favorites) {
     localStorage.setItem('emojiSoundscapeFavorites', JSON.stringify(favorites));
 }
-
 function renderFavoritesMenu() {
     favoritesMenu.innerHTML = '';
     const favorites = getFavorites();
@@ -149,20 +130,16 @@ function renderFavoritesMenu() {
         const item = document.createElement('div');
         item.className = 'favorite-item';
         item.dataset.index = index;
-        
         const nameSpan = document.createElement('span');
         nameSpan.textContent = fav.name;
         item.appendChild(nameSpan);
-
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-favorite-button';
         deleteButton.textContent = '×';
         item.appendChild(deleteButton);
-        
         favoritesMenu.appendChild(item);
     });
 }
-
 function playRandomCombination() {
     clearCurrentState();
     const baseSounds = ['🌧️', '🌊', '🌳', '🔥', '☀️', '🏜️'];
@@ -180,7 +157,6 @@ function playRandomCombination() {
     activeSounds.forEach(sound => sound.play());
     updatePlayPauseButton();
 }
-
 function generateShareText() {
     const dataToShare = Array.from(activeSounds.entries()).map(([emoji, sound]) => ({ 
         emoji, 
@@ -193,7 +169,6 @@ function generateShareText() {
     const url = `${window.location.origin}${window.location.pathname}?data=${encodedState}`;
     return `🎵 私の作ったサウンドスケープ 🎵\n\n${url}\n\n#EmojiSoundscape`;
 }
-
 function applyFilters() {
     const selectedCategories = Array.from(filterCheckboxes).filter(cb => cb.checked && cb.value !== 'all').map(cb => cb.value);
     const isAllSelected = Array.from(filterCheckboxes).find(cb => cb.value === 'all').checked;
@@ -205,9 +180,68 @@ function applyFilters() {
         }
     });
 }
+function generateImageSearchQuery(emojis) {
+    const keywords = {
+        '🌧️': 'rain', '☀️': 'sunny', '⛈️': 'storm', '❄️': 'snow', '🌈': 'rainbow', '🌊': 'ocean wave', '🔥': 'campfire', '🌳': 'forest', '🌸': 'cherry blossom', '🌅': 'sunrise', '🌇': 'sunset', '🌪️': 'tornado', '🌋': 'volcano', '🎆': 'fireworks', '🎇': 'sparkler', '🫧': 'bubbles', '🏜️': 'desert', '💧': 'water drop', '🍂': 'autumn leaves', '🪸': 'coral reef', '💥': 'explosion', '🦁': 'lion', '🐘': 'elephant', '🐎': 'horse', '🐕': 'dog', '🐈': 'cat', '🐗': 'boar', '🐐': 'goat', '🐏': 'ram', '🐖': 'pig', '🐮': 'cow', '🐺': 'wolf', '🐸': 'frog', '🪙': 'coin', '🚑': 'ambulance', '🎐': 'wind chime', '🏝️': 'tropical island', '🧊': 'ice cube', '🥤': 'drink', '🥩': 'steak', '🍽️': 'plate', '🔫': 'water gun', '✨': 'sparkles', '🔔': 'bell', '🏹': 'arrow', '🐚': 'shell', '🥁': 'drum', '🫙': 'jar', '🪨': 'rock', '🕰️': 'clock', '⌨️': 'keyboard', '🚀': 'rocket', '☂️': 'umbrella', '🏫': 'school', '📃': 'scroll', '🪚': 'saw', '🖱️': 'mouse', '🚬': 'smoking', '💸': 'flying money', '🪉': 'harp', '✈️': 'airplane'
+    };
+    const queryParts = emojis.map(emoji => keywords[emoji] || '');
+    if (queryParts.length === 0) return 'nature';
+    return queryParts.filter(p => p).join(',');
+}
+
+async function generateAndSetBackground() {
+    // ★★★ APIキーのチェックロジックを修正 ★★★
+    if (!UNSPLASH_API_KEY || UNSPLASH_API_KEY === "あなたのAPIキーをここに貼り付け...") {
+        alert("Unsplash APIキーが設定されていません。script.jsの先頭を編集してください。");
+        return;
+    }
+    const selectedEmojis = Array.from(activeSounds.keys());
+    const query = generateImageSearchQuery(selectedEmojis);
+    if (!query) {
+        document.body.style.backgroundImage = 'none';
+        return;
+    }
+    imageLoadingOverlay.style.display = 'flex';
+    const apiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&orientation=landscape&client_id=${UNSPLASH_API_KEY}`;
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Unsplash APIエラー: ${response.status}`);
+        }
+        const data = await response.json();
+        const imageUrl = data.urls.regular;
+        const img = new Image();
+        img.src = imageUrl;
+        img.onload = () => {
+            document.body.style.backgroundImage = `url('${imageUrl}')`;
+            imageLoadingOverlay.style.display = 'none';
+        };
+        img.onerror = () => {
+            throw new Error('画像の読み込みに失敗しました。');
+        }
+    } catch (error) {
+        console.error("背景画像の取得に失敗しました:", error);
+        alert("背景画像の取得に失敗しました。キーワードに合う画像が見つからないか、APIキーが間違っている可能性があります。");
+        imageLoadingOverlay.style.display = 'none';
+    }
+}
 
 // --- イベントリスナー ---
-
+playPauseButton.addEventListener('click', () => {
+    const previouslyPlaying = isPlaying;
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+        if (activeSounds.size > 0) {
+            activeSounds.forEach(sound => { if (!sound.playing()) sound.play(); });
+            if (!previouslyPlaying) {
+                generateAndSetBackground();
+            }
+        } else { isPlaying = false; }
+    } else {
+        activeSounds.forEach(sound => sound.pause());
+    }
+    updatePlayPauseButton();
+});
 emojiListItems.forEach(item => {
     const button = item.querySelector('.emoji-button');
     button.addEventListener("click", () => {
@@ -221,21 +255,13 @@ emojiListItems.forEach(item => {
                 activeSounds.get(emoji).play();
             }
         }
+        if (isPlaying) {
+            generateAndSetBackground();
+        } else {
+            document.body.style.backgroundImage = 'none';
+        }
     });
 });
-
-playPauseButton.addEventListener('click', () => {
-    isPlaying = !isPlaying;
-    if (isPlaying) {
-        if (activeSounds.size > 0) {
-            activeSounds.forEach(sound => { if (!sound.playing()) sound.play(); });
-        } else { isPlaying = false; }
-    } else {
-        activeSounds.forEach(sound => sound.pause());
-    }
-    updatePlayPauseButton();
-});
-
 saveFavoriteButton.addEventListener('click', () => {
     const currentSettings = Array.from(activeSounds.entries()).map(([emoji, sound]) => ({ 
         emoji, 
@@ -254,20 +280,16 @@ saveFavoriteButton.addEventListener('click', () => {
         renderFavoritesMenu();
     }
 });
-
 favoritesListButton.addEventListener('click', () => {
     favoritesMenu.classList.toggle('show');
 });
-
 favoritesMenu.addEventListener('click', (e) => {
     const target = e.target;
     const item = target.closest('.favorite-item');
     if (!item) return;
-
     const index = parseInt(item.dataset.index, 10);
     let favorites = getFavorites();
     const favorite = favorites[index];
-
     if (target.classList.contains('delete-favorite-button')) {
         e.stopPropagation();
         if (confirm(`「${favorite.name}」を削除しますか？`)) {
@@ -275,19 +297,16 @@ favoritesMenu.addEventListener('click', (e) => {
             saveFavorites(favorites);
             renderFavoritesMenu();
         }
-    } else {
-        if (favorite) {
-            clearCurrentState();
-            favorite.settings.forEach(s => {
-                const rate = s.rate || INITIAL_RATE;
-                const volume = s.volume || INITIAL_VOLUME;
-                setupEmojiSound(s.emoji, volume, rate);
-            });
-            favoritesMenu.classList.remove('show');
-        }
+    } else if (favorite) {
+        clearCurrentState();
+        favorite.settings.forEach(s => {
+            const rate = s.rate || INITIAL_RATE;
+            const volume = s.volume || INITIAL_VOLUME;
+            setupEmojiSound(s.emoji, volume, rate);
+        });
+        favoritesMenu.classList.remove('show');
     }
 });
-
 diceButton.addEventListener('click', playRandomCombination);
 document.addEventListener('click', (e) => {
     if (!favoritesListButton.contains(e.target) && !favoritesMenu.contains(e.target)) {
@@ -304,7 +323,6 @@ shareButton.addEventListener('click', async () => {
         await navigator.share({ title: 'Emoji Soundscape', text: shareText.split('\n\n')[1] });
     } catch (err) { console.error('共有に失敗しました:', err); }
 });
-
 copyButton.addEventListener('click', () => {
     const shareText = generateShareText();
     if (!shareText) { alert('コピーする絵文字が選択されていません。'); return; }
@@ -312,7 +330,6 @@ copyButton.addEventListener('click', () => {
         .then(() => alert('共有URLをクリップボードにコピーしました！'))
         .catch(err => console.error('コピーに失敗しました:', err));
 });
-
 filterToggleButton.addEventListener('click', () => { filterMenu.classList.toggle('show'); });
 filterCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', (e) => {
@@ -327,7 +344,6 @@ filterCheckboxes.forEach(checkbox => {
         applyFilters();
     });
 });
-
 // --- ページ読み込み時の処理 ---
 document.addEventListener('DOMContentLoaded', () => {
     renderFavoritesMenu();
