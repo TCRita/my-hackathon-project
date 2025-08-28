@@ -26,6 +26,7 @@ const diceButton = document.getElementById('dice-button');
 // --- グローバル変数 ---
 const activeSounds = new Map();
 let isPlaying = false;
+let currentApiKeyIndex = 0; // 現在使用中のAPIキーのインデックスを管理
 
 // --- 関数定義 ---
 function updateSliderBackground(slider) {
@@ -223,33 +224,40 @@ async function generateAndSetBackground() {
     
     imageLoadingOverlay.style.display = 'flex';
     
-    const proxyUrl = `/.netlify/functions/unsplash?query=${encodeURIComponent(query)}`;
+    const proxyUrl = `/.netlify/functions/unsplash?query=${encodeURIComponent(query)}&keyIndex=${currentApiKeyIndex}`;
 
     try {
         const response = await fetch(proxyUrl);
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`プロキシサーバーエラー: ${response.status}, ${errorData.error}`);
-        }
         const data = await response.json();
-        
-        if (data.errors) {
-            throw new Error(`Unsplash APIエラー: ${data.errors.join(', ')}`);
+
+        if (response.status === 429) {
+            console.warn(`APIキー ${currentApiKeyIndex + 1} が利用上限です。次のキーを試します...`);
+            currentApiKeyIndex++;
+            generateAndSetBackground();
+            return;
         }
 
+        if (response.status === 400 && data.error === 'all_keys_exhausted') {
+            throw new Error('利用可能な全てのAPIキーが上限に達しました。');
+        }
+
+        if (!response.ok) {
+            throw new Error(`プロキシサーバーエラー: ${response.status}, ${data.error}`);
+        }
+        
         const imageUrl = data.urls.regular;
         const img = new Image();
         img.src = imageUrl;
         img.onload = () => {
             document.body.style.backgroundImage = `url('${imageUrl}')`;
             imageLoadingOverlay.style.display = 'none';
+            currentApiKeyIndex = 0; // 成功したらインデックスをリセット
         };
-        img.onerror = () => {
-            throw new Error('画像の読み込みに失敗しました。');
-        }
+        img.onerror = () => { throw new Error('画像の読み込みに失敗しました。'); }
+
     } catch (error) {
         console.error("背景画像の取得に失敗しました:", error);
-        alert("背景画像の取得に失敗しました。");
+        alert(`背景画像の取得に失敗しました。\n${error.message}`);
         imageLoadingOverlay.style.display = 'none';
     }
 }
@@ -323,7 +331,6 @@ favoritesMenu.addEventListener('click', (e) => {
     const index = parseInt(item.dataset.index, 10);
     let favorites = getFavorites();
     const favorite = favorites[index];
-
     if (target.classList.contains('delete-favorite-button')) {
         e.stopPropagation();
         if (confirm(`「${favorite.name}」を削除しますか？`)) {
@@ -331,16 +338,14 @@ favoritesMenu.addEventListener('click', (e) => {
             saveFavorites(favorites);
             renderFavoritesMenu();
         }
-    } else {
-        if (favorite) {
-            clearCurrentState();
-            favorite.settings.forEach(s => {
-                const rate = s.rate || INITIAL_RATE;
-                const volume = s.volume || INITIAL_VOLUME;
-                setupEmojiSound(s.emoji, volume, rate);
-            });
-            favoritesMenu.classList.remove('show');
-        }
+    } else if (favorite) {
+        clearCurrentState();
+        favorite.settings.forEach(s => {
+            const rate = s.rate || INITIAL_RATE;
+            const volume = s.volume || INITIAL_VOLUME;
+            setupEmojiSound(s.emoji, volume, rate);
+        });
+        favoritesMenu.classList.remove('show');
     }
 });
 
