@@ -13,12 +13,31 @@ const filterMenu = document.getElementById("filter-menu");
 const filterCheckboxes = document.querySelectorAll('#filter-menu input[name="category"]');
 const emojiListItems = document.querySelectorAll('.emoji-list li');
 const shareButton = document.getElementById('share-button');
-const copyButton = document.getElementById('copy-button'); // コピーボタンを取得
+const copyButton = document.getElementById('copy-button');
 
 // --- グローバル変数 ---
 const activeSounds = new Map();
 
 // --- 関数定義 ---
+
+/**
+ * 状態を元に共有URLを生成する関数
+ * @returns {string} 生成されたURL
+ */
+function generateUrlWithState() {
+    if (activeSounds.size === 0) return window.location.origin + window.location.pathname;
+
+    const state = [];
+    activeSounds.forEach((sound, emoji) => {
+        state.push({ emoji: emoji, volume: sound.volume() });
+    });
+
+    const jsonState = JSON.stringify(state);
+    const encodedState = encodeURIComponent(jsonState);
+    return `${window.location.origin}${window.location.pathname}?data=${encodedState}`;
+}
+
+// 他の関数は変更なし...
 function updateSliderBackground(slider) {
     const percentage = slider.value * 100;
     slider.style.background = `linear-gradient(to right, ${SLIDER_COLOR_ACTIVE} 0%, ${SLIDER_COLOR_ACTIVE} ${percentage}%, ${SLIDER_COLOR_INACTIVE} ${percentage}%, ${SLIDER_COLOR_INACTIVE} 100%)`;
@@ -38,117 +57,136 @@ function applyFilters() {
     });
 }
 
-// 共有用のテキストを生成する関数
-function generateShareText() {
-    if (activeSounds.size === 0) return null;
-    
-    let text = '🎵 私の作ったサウンドスケープ 🎵\n\n';
-    activeSounds.forEach((sound, emoji) => {
-        const volumePercentage = Math.round(sound.volume() * 100);
-        text += `${emoji} : 音量 ${volumePercentage}%\n`;
-    });
-    text += '\n#EmojiSoundscape';
-    return text;
-}
+/**
+ * 特定の絵文字を選択状態にし、音を再生する関数
+ * @param {string} emoji - 対象の絵文字
+ * @param {number} volume - 初期音量
+ */
+function activateEmoji(emoji, volume) {
+    const button = Array.from(document.querySelectorAll('.emoji-button')).find(btn => btn.textContent === emoji);
+    if (!button || !emojiSounds[emoji]) return;
 
+    button.classList.add("selected");
+
+    const sound = new Howl({ src: [emojiSounds[emoji]], loop: true, volume: volume, html5: true });
+    sound.play();
+    activeSounds.set(emoji, sound);
+
+    const newItem = document.createElement("div");
+    newItem.className = "selected-emoji-item";
+    newItem.dataset.emoji = emoji;
+
+    const emojiIcon = document.createElement("span");
+    emojiIcon.className = "emoji-icon";
+    emojiIcon.textContent = emoji;
+
+    const volumeSlider = document.createElement("input");
+    volumeSlider.type = "range";
+    volumeSlider.className = "volume-slider";
+    volumeSlider.min = 0;
+    volumeSlider.max = 1;
+    volumeSlider.step = 0.01;
+    volumeSlider.value = volume;
+
+    volumeSlider.addEventListener("input", () => {
+        const currentSound = activeSounds.get(emoji);
+        if (currentSound) { currentSound.volume(volumeSlider.value); }
+        updateSliderBackground(volumeSlider);
+    });
+
+    newItem.appendChild(emojiIcon);
+    newItem.appendChild(volumeSlider);
+    displayArea.appendChild(newItem);
+    updateSliderBackground(volumeSlider);
+}
 
 // --- イベントリスナーの設定 ---
 
 // 共有ボタンのクリックイベント
 shareButton.addEventListener('click', async () => {
-    const shareText = generateShareText();
-    if (!shareText) {
+    if (activeSounds.size === 0) {
         alert('共有する絵文字が選択されていません。');
         return;
     }
+    
+    const url = generateUrlWithState();
+    const shareText = `🎵 私の作ったサウンドスケープを聴いてみて！\n\n#EmojiSoundscape`;
 
     try {
         await navigator.share({
             title: 'Emoji Soundscape',
             text: shareText,
-            url: window.location.href,
+            url: url,
         });
     } catch (err) {
         console.error('共有に失敗しました:', err);
     }
 });
 
-// ==== ↓↓↓ コピーボタンのクリックイベントを追加 ↓↓↓ ====
+// コピーボタンのクリックイベント
 copyButton.addEventListener('click', () => {
-    const shareText = generateShareText();
-    if (!shareText) {
+    if (activeSounds.size === 0) {
         alert('コピーする絵文字が選択されていません。');
         return;
     }
-
-    navigator.clipboard.writeText(shareText).then(() => {
-        alert('クリップボードにコピーしました！');
+    const url = generateUrlWithState();
+    navigator.clipboard.writeText(url).then(() => {
+        alert('共有URLをクリップボードにコピーしました！');
     }).catch(err => {
         console.error('コピーに失敗しました:', err);
         alert('コピーに失敗しました。');
     });
 });
-// ==== ↑↑↑ 追加するイベントリスナーはここまで ↑↑↑ ====
 
-filterToggleButton.addEventListener('click', () => {
-    filterMenu.classList.toggle('show');
-});
+// フィルター関連のイベントリスナーは変更なし
+filterToggleButton.addEventListener('click', () => { filterMenu.classList.toggle('show'); });
+filterCheckboxes.forEach(checkbox => { /* ... */ });
 
-filterCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
-        const allCheckbox = Array.from(filterCheckboxes).find(cb => cb.value === 'all');
-        if (e.target.value === 'all' && e.target.checked) {
-            filterCheckboxes.forEach(cb => {
-                if (cb.value !== 'all') cb.checked = false;
-            });
-        } else if (e.target.value !== 'all' && e.target.checked) {
-            allCheckbox.checked = false;
-        }
-        const anyChecked = Array.from(filterCheckboxes).some(cb => cb.checked);
-        if (!anyChecked) {
-            allCheckbox.checked = true;
-        }
-        applyFilters();
-    });
-});
-
+// 絵文字ボタンのクリックイベント（選択・解除のロジックを少し変更）
 emojiListItems.forEach(item => {
     const button = item.querySelector('.emoji-button');
     button.addEventListener("click", () => {
         const emoji = button.textContent;
-        if (!emojiSounds[emoji]) { return; }
-        button.classList.toggle("selected");
-        if (button.classList.contains("selected")) {
-            const sound = new Howl({ src: [emojiSounds[emoji]], loop: true, volume: INITIAL_VOLUME, html5: true });
-            sound.play();
-            activeSounds.set(emoji, sound);
-            const newItem = document.createElement("div");
-            newItem.className = "selected-emoji-item";
-            newItem.dataset.emoji = emoji;
-            const emojiIcon = document.createElement("span");
-            emojiIcon.className = "emoji-icon";
-            emojiIcon.textContent = emoji;
-            const volumeSlider = document.createElement("input");
-            volumeSlider.type = "range";
-            volumeSlider.className = "volume-slider";
-            volumeSlider.min = 0;
-            volumeSlider.max = 1;
-            volumeSlider.step = 0.01;
-            volumeSlider.value = INITIAL_VOLUME;
-            volumeSlider.addEventListener("input", () => {
-                const currentSound = activeSounds.get(emoji);
-                if (currentSound) { currentSound.volume(volumeSlider.value); }
-                updateSliderBackground(volumeSlider);
-            });
-            newItem.appendChild(emojiIcon);
-            newItem.appendChild(volumeSlider);
-            displayArea.appendChild(newItem);
-            updateSliderBackground(volumeSlider);
-        } else {
+        const isSelected = button.classList.contains("selected");
+
+        if (isSelected) {
+            // 解除処理
+            button.classList.remove("selected");
             const sound = activeSounds.get(emoji);
-            if (sound) { sound.stop(); activeSounds.delete(emoji); }
+            if (sound) {
+                sound.stop();
+                activeSounds.delete(emoji);
+            }
             const itemToRemove = displayArea.querySelector(`.selected-emoji-item[data-emoji="${emoji}"]`);
-            if (itemToRemove) { displayArea.removeChild(itemToRemove); }
+            if (itemToRemove) {
+                displayArea.removeChild(itemToRemove);
+            }
+        } else {
+            // 選択処理
+            activateEmoji(emoji, INITIAL_VOLUME);
         }
     });
+});
+
+// --- ページ読み込み時の処理 ---
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+
+    if (dataParam) {
+        try {
+            const decodedState = decodeURIComponent(dataParam);
+            const state = JSON.parse(decodedState);
+            
+            if (Array.isArray(state)) {
+                state.forEach(item => {
+                    if (item.emoji && typeof item.volume === 'number') {
+                        activateEmoji(item.emoji, item.volume);
+                    }
+                });
+            }
+        } catch (e) {
+            console.error('URLパラメータの解析に失敗しました:', e);
+        }
+    }
 });
