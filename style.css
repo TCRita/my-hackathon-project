@@ -208,3 +208,17 @@ body {
     background-color: #c5d4e0;
     transform: scale(1.1);
 }
+
+#play-toggle-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+#play-toggle-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
