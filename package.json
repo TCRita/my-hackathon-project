@@ -1,0 +1,8 @@
+{
+    "name": "emoji-soundscape",
+    "version": "1.0.0",
+    "description": "An application to create soundscapes from emojis.",
+    "dependencies": {
+      "node-fetch": "^2.6.7"
+    }
+  }
