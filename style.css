@@ -13,19 +13,45 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    background-size: cover;
+    background-position: center center;
+    transition: background-image 1s ease-in-out;
+    opacity: 0.8;
 }
 
-/* ヘッダーのデザイン */
-.site-header {
-    margin-bottom: 20px;
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
+    font-size: 20px;
+    flex-direction: column;
 }
-.site-header h1 {
-    font-size: 36px;
-    font-weight: 600;
-    color: #444;
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #fff;
+    animation: spin 1s ease infinite;
+    margin: 0 auto 10px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* メインエリアのデザイン */
+.site-header { margin-bottom: 20px; }
+.site-header h1 { font-size: 36px; font-weight: 600; color: #444;
+    background-color: #c5d4e0;}
+
 .main-content {
     position: relative;
     width: 100%;
@@ -59,43 +85,59 @@ body {
 
 .emoji-mixer {
     width: 90%;
-    max-width: 1300px; 
+    max-width: 1000px; 
     background-color: white;
     padding: 64px; 
     border-radius: 32px;
     box-shadow: 0 16px 64px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
-.emoji-mixer h1 {
-    font-size: 48px;
-    margin-bottom: 48px;
-}
+.emoji-mixer h1 { font-size: 40px; margin-bottom: 32px; }
 
-/* 選択した絵文字の表示エリア */
+.slider-labels-header {
+    display: flex;
+    gap: 12px;
+    padding: 0 24px 8px 24px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 8px;
+}
+.emoji-icon-placeholder {
+    width: 32px;
+    height: 1px;
+}
 .selected-emojis-display {
     width: 100%;
     min-height: 120px;
-    background-color: #f0f3f5;
+    background-color: rgba(240, 243, 245, 0.9);
     border-radius: 16px;
-    margin-bottom: 24px;
-    padding: 24px;
+    margin-top: 24px;
+    padding: 16px 24px;
     display: flex;
     flex-direction: column;
 }
-
-/* 選択済み絵文字リストのアイテム */
 .selected-emoji-item {
     display: flex;
     align-items: center;
+    gap: 12px;
     margin-bottom: 16px;
 }
 .emoji-icon {
     font-size: 32px;
-    margin-right: 16px;
+    width: 32px;
+    text-align: center;
 }
-
-/* 音量スライダーのデザイン */
-.volume-slider {
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+.slider-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+.volume-slider, .rate-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
@@ -105,7 +147,7 @@ body {
     outline: none;
     cursor: pointer;
 }
-.volume-slider::-webkit-slider-thumb {
+.volume-slider::-webkit-slider-thumb, .rate-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 20px;
@@ -114,7 +156,7 @@ body {
     border-radius: 50%;
     cursor: pointer;
 }
-.volume-slider::-moz-range-thumb {
+.volume-slider::-moz-range-thumb, .rate-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     background: #007bff;
@@ -122,103 +164,126 @@ body {
     cursor: pointer;
     border: none;
 }
-
-/* 絵文字選択エリア全体のコンテナ */
 .emoji-selection-area {
     position: relative;
-    background-color: #f0f3f5;
+    background-color: rgba(240, 243, 245, 0.9);
     padding: 24px;
     border-radius: 16px;
+    text-align: center;
 }
-
-/* フィルターUI */
-.filter-container {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 10;
+.main-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
 }
-.filter-button {
-    background: #fff;
-    border: 1px solid #ccc;
+.play-pause-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 28px;
+    padding: 14px 28px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.2s, transform 0.2s;
+}
+.play-pause-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+.play-pause-button.playing {
+    background-color: #dc3545;
+}
+.play-pause-button.playing:hover {
+    background-color: #c82333;
+}
+.dice-button {
+    background-color: #ffc107;
+    color: white;
+    border: none;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
     cursor: pointer;
-    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.2s, transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.filter-menu {
-    display: none;
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    white-space: nowrap;
+.dice-button:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px) rotate(15deg);
 }
-.filter-menu.show {
-    display: block;
-}
-.filter-menu label {
-    display: block;
-    padding: 8px 12px;
-    cursor: pointer;
-    text-align: left;
-}
-.filter-menu label:hover {
-    background-color: #f4f7f9;
-}
-.filter-menu input {
-    margin-right: 8px;
-}
-
-/* 絵文字リストのグリッド */
-.emoji-input-area {
-    max-height: 250px;
-    overflow-y: auto;
-    padding-top: 24px;
-}
+.filter-container { position: absolute; top: 16px; right: 16px; z-index: 10; }
+.filter-button { background: #fff; border: 1px solid #ccc; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 16px; }
+.filter-menu { display: none; position: absolute; top: 40px; right: 0; background: white; border: 1px solid #ccc; border-radius: 8px; padding: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); white-space: nowrap; z-index: 11; }
+.filter-menu.show { display: block; }
+.filter-menu label { display: block; padding: 8px 12px; cursor: pointer; text-align: left; }
+.filter-menu label:hover { background-color: #f4f7f9; }
+.filter-menu input { margin-right: 8px; }
+.emoji-input-area { max-height: 250px; overflow-y: auto; }
 .emoji-list {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 16px;
 }
-
-/* 絵文字ボタンのデザイン */
-.emoji-button {
-    font-size: 48px;
-    background-color: #e9eef2;
+.emoji-button { font-size: 48px; background-color: #e9eef2; border: none; border-radius: 16px; padding: 16px; cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; width: 100%; height: 100%; }
+.emoji-button:hover { transform: scale(1.1); background-color: #dbe4ea; }
+.emoji-button.selected { background-color: #c5d4e0; transform: scale(1.1); }
+.favorites-container {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+.favorites-list-container {
+    position: relative;
+}
+.favorites-menu {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 11;
+}
+.favorites-menu.show {
+    display: block;
+}
+.favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.favorite-item:hover {
+    background-color: #f4f7f9;
+}
+.delete-favorite-button {
+    background-color: #ff4d4d;
+    color: white;
     border: none;
-    border-radius: 16px;
-    padding: 16px; 
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    margin-left: 16px;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-    width: 100%;
-    height: 100%;
-}
-.emoji-button:hover {
-    transform: scale(1.1);
-    background-color: #dbe4ea;
-}
-.emoji-button.selected {
-    background-color: #c5d4e0;
-    transform: scale(1.1);
-}
-
-#play-toggle-container {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-}
-
-#play-toggle-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+    line-height: 20px;
 }
