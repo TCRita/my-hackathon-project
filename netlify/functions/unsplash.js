@@ -2,16 +2,24 @@ const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
     const { query } = event.queryStringParameters;
-    const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
+    
+    // Netlifyの環境変数からカンマ区切りのAPIキー文字列を取得
+    const API_KEYS_STRING = process.env.UNSPLASH_API_KEY;
 
-    if (!UNSPLASH_API_KEY) {
+    if (!API_KEYS_STRING) {
         return {
             statusCode: 500,
             body: JSON.stringify({ error: 'APIキーがサーバーに設定されていません。' })
         };
     }
+
+    // カンマで分割してキーの配列を作成
+    const apiKeys = API_KEYS_STRING.split(',');
     
-    const apiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&orientation=landscape&client_id=${UNSPLASH_API_KEY}`;
+    // 配列からランダムに1つのキーを選択
+    const randomApiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+    
+    const apiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&orientation=landscape&client_id=${randomApiKey}`;
 
     try {
         const response = await fetch(apiUrl);
