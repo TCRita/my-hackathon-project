@@ -120,7 +120,16 @@ body {
     text-align: center;
 }
 
-/* ==== ↓↓↓ 再生/停止ボタンのスタイルを追加 ↓↓↓ ==== */
+/* メイン操作ボタンのコンテナ */
+.main-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* 再生/停止ボタン */
 .play-pause-button {
     background-color: #28a745;
     color: white;
@@ -132,24 +141,43 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     transition: background-color 0.2s, transform 0.2s;
-    margin-bottom: 24px;
 }
 .play-pause-button:hover {
     background-color: #218838;
     transform: translateY(-2px);
 }
 .play-pause-button.playing {
-    background-color: #dc3545; /* 再生中は停止ボタンの色に */
+    background-color: #dc3545;
 }
 .play-pause-button.playing:hover {
     background-color: #c82333;
 }
-/* ==== ↑↑↑ 追加するスタイルはここまで ↑↑↑ ==== */
+
+/* サイコロボタン */
+.dice-button {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.2s, transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dice-button:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px) rotate(15deg);
+}
 
 /* フィルターUI */
 .filter-container { position: absolute; top: 16px; right: 16px; z-index: 10; }
 .filter-button { background: #fff; border: 1px solid #ccc; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 16px; }
-.filter-menu { display: none; position: absolute; top: 40px; right: 0; background: white; border: 1px solid #ccc; border-radius: 8px; padding: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); white-space: nowrap; }
+.filter-menu { display: none; position: absolute; top: 40px; right: 0; background: white; border: 1px solid #ccc; border-radius: 8px; padding: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); white-space: nowrap; z-index: 11; }
 .filter-menu.show { display: block; }
 .filter-menu label { display: block; padding: 8px 12px; cursor: pointer; text-align: left; }
 .filter-menu label:hover { background-color: #f4f7f9; }
@@ -168,3 +196,56 @@ body {
 .emoji-button { font-size: 48px; background-color: #e9eef2; border: none; border-radius: 16px; padding: 16px; cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; width: 100%; height: 100%; }
 .emoji-button:hover { transform: scale(1.1); background-color: #dbe4ea; }
 .emoji-button.selected { background-color: #c5d4e0; transform: scale(1.1); }
+
+/* お気に入り機能 */
+.favorites-container {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+.favorites-list-container {
+    position: relative;
+}
+.favorites-menu {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 11;
+}
+.favorites-menu.show {
+    display: block;
+}
+.favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.favorite-item:hover {
+    background-color: #f4f7f9;
+}
+.delete-favorite-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    margin-left: 16px;
+    cursor: pointer;
+    line-height: 20px;
+}

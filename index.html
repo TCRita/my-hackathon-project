@@ -25,7 +25,10 @@
                 </div>
 
             <div class="emoji-selection-area">
-                <button id="play-pause-button" class="play-pause-button">再生</button>
+                <div class="main-controls">
+                    <button id="play-pause-button" class="play-pause-button">再生</button>
+                    <button id="dice-button" class="dice-button">🎲</button>
+                </div>
 
                 <div class="filter-container">
                     <button id="filter-toggle-button" class="filter-button">▼</button>
@@ -72,6 +75,15 @@
                         <li data-category="animal"><button class="emoji-button">🐮</button></li>
                         <li data-category="animal"><button class="emoji-button">🐺</button></li>
                     </ul>
+                </div>
+                
+                <div class="favorites-container">
+                    <button id="save-favorite-button" class="action-button">保存</button>
+                    <div class="favorites-list-container">
+                        <button id="favorites-list-button" class="action-button">リスト</button>
+                        <div id="favorites-menu" class="favorites-menu">
+                            </div>
+                    </div>
                 </div>
             </div>
         </section>
