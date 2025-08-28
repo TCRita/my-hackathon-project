@@ -27,10 +27,36 @@ body {
 
 /* メインエリアのデザイン */
 .main-content {
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
 }
+.action-buttons-container {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+}
+.action-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.2s, transform 0.2s;
+}
+.action-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
 .emoji-mixer {
     width: 90%;
     max-width: 1300px; 
@@ -51,11 +77,11 @@ body {
     min-height: 120px;
     background-color: #f0f3f5;
     border-radius: 16px;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
 }
-
-/* ==== ↓↓↓ ここから新しいスタイルを追加 ↓↓↓ ==== */
 
 /* 選択済み絵文字リストのアイテム */
 .selected-emoji-item {
@@ -96,30 +122,83 @@ body {
     cursor: pointer;
     border: none;
 }
-/* ==== ↑↑↑ 追加するスタイルはここまで ↑↑↑ ==== */
 
+/* 絵文字選択エリア全体のコンテナ */
+.emoji-selection-area {
+    position: relative;
+    background-color: #f0f3f5;
+    padding: 24px;
+    border-radius: 16px;
+}
+
+/* フィルターUI */
+.filter-container {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+}
+.filter-button {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.filter-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    white-space: nowrap;
+}
+.filter-menu.show {
+    display: block;
+}
+.filter-menu label {
+    display: block;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-align: left;
+}
+.filter-menu label:hover {
+    background-color: #f4f7f9;
+}
+.filter-menu input {
+    margin-right: 8px;
+}
 
 /* 絵文字リストのグリッド */
 .emoji-input-area {
     max-height: 250px;
     overflow-y: auto;
+    padding-top: 24px;
 }
 .emoji-list {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 24px; 
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px;
 }
 
 /* 絵文字ボタンのデザイン */
 .emoji-button {
-    font-size: 56px; 
+    font-size: 48px;
     background-color: #e9eef2;
     border: none;
     border-radius: 16px;
-    padding: 20px; 
+    padding: 16px; 
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease;
+    width: 100%;
+    height: 100%;
 }
 .emoji-button:hover {
     transform: scale(1.1);
